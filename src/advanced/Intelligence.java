@@ -3,10 +3,10 @@ package advanced;
 import arc.Core;
 import arc.graphics.Color;
 import arc.graphics.g2d.TextureRegion;
+import arc.graphics.g2d.TextureAtlas.AtlasRegion;
 import arc.scene.ui.layout.Table;
 import arc.struct.ObjectMap;
 import arc.struct.Seq;
-import mindustry.Vars;
 import mindustry.ai.types.AssemblerAI;
 import mindustry.content.*;
 import mindustry.ctype.ContentType;
@@ -14,14 +14,13 @@ import mindustry.ctype.UnlockableContent;
 import mindustry.entities.bullet.BulletType;
 import mindustry.entities.part.DrawPart;
 import mindustry.graphics.Pal;
+import mindustry.type.StatusEffect;
 import mindustry.type.Weapon;
 import mindustry.type.Weather;
 import mindustry.world.blocks.Attributes;
 import mindustry.world.draw.DrawBlock;
 import mindustry.world.meta.*;
 import static mindustry.Vars.*;
-
-import java.lang.reflect.Array;
 
 public class Intelligence {
     static final StatCat category = new StatCat("advanced");
@@ -40,8 +39,8 @@ public class Intelligence {
             sCost = new Stat("cost", category),
             sHealthScale = new Stat("healthScale", category),
             sAttributes = new Stat("attributes", category),
-            sImages = new Stat("images", category),
-            sLegDamageRad = new Stat("legdmgrad", category);
+            sImages = new Stat("icons", category),
+            sListing = new Stat("listing", category);
 
     public static final Seq<EnvPack> envs = Seq.with(
             new EnvPack(Env.terrestrial, "terrestrial", UnitTypes.dagger.emoji()),
@@ -67,10 +66,13 @@ public class Intelligence {
     static void addIcons(String path, Table table, Object obj, int depth, Object last) {
         if (depth++ > 5)
             return;
-        if(obj == null || obj == last)
+        if (obj == null || obj == last)
             return;
         for (var f : obj.getClass().getFields()) {
             Object o;
+            if (obj instanceof StatusEffect st)
+                if (f.getName() == "affinities" || f.getName() == "opposites")
+                    continue;
             try {
                 o = f.get(obj);
             } catch (Throwable __) {
@@ -84,25 +86,29 @@ public class Intelligence {
             builder.append(f.getName());
             if (o instanceof BulletType b) {
                 table.button(builder.toString(), () -> {
-                    Main.ghost.real = b;
-                    ui.content.show(Main.ghost);
+                    Main.bullet.execute(b);
                 }).height(50).width(500);
                 table.row();
             }
             if (o instanceof TextureRegion tr) {
+                if (tr == arc.Core.atlas.find("error"))
+                    continue;
                 var str = builder.toString();
                 table.label(() -> str);
                 table.image(tr);
+                if (tr instanceof AtlasRegion ar)
+                    if (ar.name != null)
+                        table.label(() -> ar.name);
                 table.row();
             } else if (o instanceof Iterable i) {
                 int counter = 0;
                 for (var q : i)
-                    addIcons(path + "." + f.getName() + "[" + counter++ + "]", table, q, depth, obj);//TODO use builder
-            } else if (o.getClass().isArray()) {
-                var l = Array.getLength(o);
-                for (int i = 0; i < l; i++)
-                    addIcons(path + "." + f.getName() + "[" + i + "]", table, Array.get(o, i), depth, obj);
-            } else if (o instanceof DrawPart || o instanceof DrawBlock || o instanceof BulletType || o instanceof Weapon)
+                    addIcons(path + "." + f.getName() + "[" + counter++ + "]", table, q, depth, obj);// TODO use builder
+            } else if (o instanceof Object[] objs) {
+                for (int i = 0; i < objs.length; i++)
+                    addIcons(path + "." + f.getName() + "[" + i + "]", table, objs[i], depth, obj);
+            } else if (o instanceof DrawPart || o instanceof DrawBlock || o instanceof BulletType
+                    || o instanceof Weapon)
                 addIcons(path + "." + f.getName(), table, o, depth, obj);
         }
     }
@@ -116,7 +122,8 @@ public class Intelligence {
     }
 
     public static void initStats() {
-        arc.util.Log.info("Advanced stat init");
+        Listing.init();
+
         for (var seq : content.getContentMap())
             for (var c : seq)
                 if (c instanceof UnlockableContent u) {
@@ -151,7 +158,7 @@ public class Intelligence {
             u.stats.add(sDps, u.dpsEstimate);
             if (u.crushDamage > 0)
                 u.stats.add(sRamDamage, u.crushDamage * 60, StatUnit.perSecond);
-            if(u.legSplashDamage>0){
+            if (u.legSplashDamage > 0) {
                 u.stats.add(sRamDamage, u.legSplashDamage);
                 u.stats.add(sRamDamage, u.legSplashRange / 8, StatUnit.blocks);
             }
