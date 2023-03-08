@@ -20,14 +20,7 @@ final class BulletDisplayContent extends WeirdContent {
 
     @Override
     public void checkStats() {
-        try {
-            var f = stats.getClass().getDeclaredField("map");
-            f.setAccessible(true);
-            f.set(stats, null);
-        } catch (Throwable owo) {
-            throw new RuntimeException(owo);
-        }
-        Intelligence.setStats(this);
+        super.checkStats();
         if (bullet == null)
             return;
             

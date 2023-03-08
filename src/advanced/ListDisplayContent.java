@@ -17,19 +17,12 @@ public class ListDisplayContent extends WeirdContent {
 
     @Override
     public void checkStats() {
-        try {
-            var f = stats.getClass().getDeclaredField("map");
-            f.setAccessible(true);
-            f.set(stats, null);
-        } catch (Throwable owo) {
-            throw new RuntimeException(owo);
-        }
-        Intelligence.setStats(this);
+        super.checkStats();
         stats.add(Intelligence.sListing, (Table t) -> {
             t.row();
             for (var c : mindustry.Vars.content.getBy(type)) {
                 var u = (UnlockableContent) c;
-                t.label(() -> u.localizedName);
+                t.label(() -> u.localizedName).get().clicked(() -> mindustry.Vars.ui.content.show(u));
                 var img = t.image(u.uiIcon).get().setScaling(Scaling.fit);
                 img.setSize(36, 36);
                 img.clicked(() -> mindustry.Vars.ui.content.show(u));
