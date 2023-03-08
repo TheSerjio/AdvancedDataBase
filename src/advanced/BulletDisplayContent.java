@@ -7,7 +7,7 @@ import mindustry.world.meta.*;
 final class BulletDisplayContent extends WeirdContent {
 
     public BulletDisplayContent() {
-        super("bullet-content");
+        super("bullet");
         uiIcon = fullIcon = mindustry.content.StatusEffects.corroded.uiIcon;
     }
 

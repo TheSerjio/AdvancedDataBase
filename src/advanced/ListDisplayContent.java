@@ -8,7 +8,7 @@ public class ListDisplayContent extends WeirdContent {
     public final ContentType type;
 
     public ListDisplayContent(UnlockableContent u) {
-        super(u.getContentType().name() + "-content");
+        super(u.getContentType().name());
         type = u.getContentType();
         localizedName = arc.Core.bundle.get("content." + type.name() + ".name");
         uiIcon = u.uiIcon;
@@ -18,7 +18,7 @@ public class ListDisplayContent extends WeirdContent {
     @Override
     public void checkStats() {
         super.checkStats();
-        stats.add(Intelligence.sListing, (Table t) -> {
+        stats.add(Intelligence.sList, (Table t) -> {
             t.row();
             for (var c : mindustry.Vars.content.getBy(type)) {
                 var u = (UnlockableContent) c;

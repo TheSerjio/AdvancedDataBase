@@ -39,8 +39,8 @@ public class Intelligence {
             sCost = new Stat("cost", category),
             sHealthScale = new Stat("healthScale", category),
             sAttributes = new Stat("attributes", category),
-            sImages = new Stat("icons", category),
-            sListing = new Stat("listing", category);
+            sList = new Stat("list", category),
+            sPermanent = new Stat("permanent", category);
 
     public static final Seq<EnvPack> envs = Seq.with(
             new EnvPack(Env.terrestrial, "terrestrial", UnitTypes.dagger.emoji()),
@@ -115,7 +115,7 @@ public class Intelligence {
 
     public static void setStats(UnlockableContent q) {
         q.stats.add(sID, q.id);
-        q.stats.add(sImages, (Table t) -> {
+        q.stats.add(sList, (Table t) -> {
             t.row();
             addIcons("", t, q, 0, null);
         });
@@ -150,7 +150,7 @@ public class Intelligence {
         }
 
         for (var u : content.units()) {
-            u.hidden = false;
+            u.hidden = u.internal;
             u.playerControllable = !(u.aiController.get() instanceof AssemblerAI);// it crashes
             u.createScorch = true;
             u.abilities.each(a -> a.display = true);
@@ -175,6 +175,7 @@ public class Intelligence {
                 var name = q.localizedName;
                 q.localizedName = name.substring(0, 1).toUpperCase() + name.substring(1);
             }
+            q.stats.add(sPermanent, q.permanent);
         }
 
         for (var i : content.items()) {

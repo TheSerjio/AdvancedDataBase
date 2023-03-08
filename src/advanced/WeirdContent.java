@@ -5,7 +5,7 @@ import mindustry.ctype.*;
 public class WeirdContent extends UnlockableContent {
 
     public WeirdContent(String name) {
-        super(name);
+        super("advanced-" + name);
         alwaysUnlocked = true;
         unlocked = true;
         uiIcon = fullIcon = arc.Core.atlas.find("error");
