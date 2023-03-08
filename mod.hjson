@@ -2,7 +2,7 @@ displayName: "Advanced DataBase (by Serjio)"
 name: "advanced-database"
 author: "The Serjio#3162"
 main: "advanced.Main"
-description: "Tiny mod that displays more stats in database. Multiplayer compatible.\nМаленький мод который показывает больше информации в базе данных. Не влияет на игру по сети"
+description: "Displays more stats in database. Unhides few things. Multiplayer compatible.\nПоказывает больше информации в базе данных. Открывает пару скрытых вещей. Не влияет на игру по сети"
 version: 1.0
 minGameVersion: 142
 java: true
