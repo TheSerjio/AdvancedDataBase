@@ -4,6 +4,7 @@ import arc.graphics.g2d.TextureRegion;
 import arc.graphics.g2d.TextureAtlas.AtlasRegion;
 import arc.scene.ui.Tooltip;
 import arc.scene.ui.layout.Table;
+import arc.struct.*;
 import mindustry.gen.Tex;
 import mindustry.ui.dialogs.BaseDialog;
 
@@ -32,13 +33,19 @@ public class AtlasContent extends WeirdContent {
         stats.add(Intelligence.sImages, (Table table) -> {
             table.row();
             i = 0;
-            arc.Core.atlas.getRegionMap().each((String name, AtlasRegion region) -> {
+            var origin = arc.Core.atlas.getRegionMap();
+            var keys = new Seq<String>(false, origin.size);
+            for(var key : origin.keys())
+                keys.add(key);
+            keys.sort();
+            keys.each((String name) -> {
+                var region = origin.get(name);
                 var cell = table.image(region).size(64);
                 var img = cell.get();
                 img.addListener(new Tooltip(i -> i.background(Tex.button).add(name)));
                 img.clicked(() -> new ImageDialog(name, region).show());
 
-                if(i++ % 16==0)
+                if((++i % 16)==0)
                     table.row();
             });
             i = 0;
