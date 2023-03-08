@@ -1,7 +1,6 @@
 package advanced;
 
 import arc.graphics.g2d.TextureRegion;
-import arc.graphics.g2d.TextureAtlas.AtlasRegion;
 import arc.scene.ui.Tooltip;
 import arc.scene.ui.layout.Table;
 import arc.struct.*;
