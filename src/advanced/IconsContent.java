@@ -18,6 +18,7 @@ public class IconsContent extends WeirdContent {
     public void checkStats() {
         super.checkStats();
         stats.add(Intelligence.sList, (Table t) -> {
+            t.label(() -> "All icons have small versions");
             t.row();
             var fields = Icon.class.getDeclaredFields();
             Arrays.sort(fields, (Field a, Field b) -> a.getName().compareTo(b.getName()));

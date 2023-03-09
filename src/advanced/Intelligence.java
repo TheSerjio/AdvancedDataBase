@@ -39,8 +39,8 @@ public class Intelligence {
             sCost = new Stat("cost", category),
             sHealthScale = new Stat("healthScale", category),
             sAttributes = new Stat("attributes", category),
-            sList = new Stat("list", category),
-            sPermanent = new Stat("permanent", category);
+            sPermanent = new Stat("permanent", category),
+            sList = new Stat("list", category);
 
     public static final Seq<EnvPack> envs = Seq.with(
             new EnvPack(Env.terrestrial, "terrestrial", UnitTypes.dagger.emoji()),

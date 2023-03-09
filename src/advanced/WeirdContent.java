@@ -26,6 +26,7 @@ public class WeirdContent extends UnlockableContent {
             throw new RuntimeException(owo);
         }
         Intelligence.setStats(this);
+        Main.funny();
     }
 
     @Override

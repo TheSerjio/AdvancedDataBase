@@ -9,6 +9,7 @@ import mindustry.ui.dialogs.BaseDialog;
 
 public class SpriteDialog extends BaseDialog {
     private TextField search;
+    private TextField columns;
     private Table all = new Table();
 
     private static class ImageDialog extends BaseDialog {
@@ -37,11 +38,16 @@ public class SpriteDialog extends BaseDialog {
             search = s.field(null, text -> rebuild()).growX().get();
             search.setMessageText("@players.search");
         }).fillX().padBottom(4).row();
+        cont.table(s -> {
+            s.image(Icon.zoom).padRight(8);
+            columns = s.field("10", text -> rebuild()).growX().get();
+            columns.setMessageText("Columnds");
+        }).fillX().padBottom(4).row();
 
         cont.pane(all).scrollX(true);
     }
 
-    int i;
+    int i, c;
 
     void rebuild() {
         all.clear();
@@ -53,6 +59,14 @@ public class SpriteDialog extends BaseDialog {
             keys.add(key);
         keys.sort();
         i = 0;
+        c = 0;
+        try {
+            c = Integer.parseUnsignedInt(columns.getText());
+        } catch (Throwable lol) {
+            arc.util.Log.err(lol);
+        }
+        if (c < 1)
+            c = 1;
         keys.each((String name) -> {
             if (!name.contains(text))
                 return;
@@ -62,7 +76,7 @@ public class SpriteDialog extends BaseDialog {
             img.addListener(new Tooltip(i -> i.background(Tex.button).add(name)));
             img.clicked(() -> new ImageDialog(name, region).show());
 
-            if ((++i % 16) == 0)
+            if ((++i % c) == 0)
                 all.row();
         });
 
