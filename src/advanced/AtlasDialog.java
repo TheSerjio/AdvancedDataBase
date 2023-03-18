@@ -11,7 +11,7 @@ import mindustry.ui.dialogs.BaseDialog;
 public class AtlasDialog extends BaseDialog {
     public AtlasDialog(){
         super("atlas");
-        addCloseButton();
+        closeOnBack();
         var all = new Table();
         for(var texture : arc.Core.atlas.getTextures()){
             all.add(new Atlas(texture));
@@ -36,8 +36,8 @@ public class AtlasDialog extends BaseDialog {
             var mouse = arc.Core.input.mouse();
             label.x = mouse.x;
             label.y = mouse.y;
-            var rx = mouse.x - x;
-            var ry = mouse.y - y;
+            var rx = label.x - x;
+            var ry = label.y - y;
             label.setText("");
             for(var r : regions)
             {

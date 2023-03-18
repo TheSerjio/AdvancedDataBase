@@ -27,8 +27,6 @@ public class AdvancedDataBaseDialog extends BaseDialog{
 
     public AdvancedDataBaseDialog(){
         super("@database");
-
-        shouldPause = true;
         addCloseButton();
         shown(this::rebuild);
         onResize(this::rebuild);
@@ -99,6 +97,14 @@ public class AdvancedDataBaseDialog extends BaseDialog{
                         }
                     });
                     image.addListener(new Tooltip(t -> t.background(Tex.button).add(unlock.localizedName + (settings.getBool("console") ? "\n[gray]" + unlock.name : ""))));
+
+                    if(unlock == mindustry.content.Blocks.wallOreTungsten){//hack
+                        list.row();
+                        for(int x=0;x<cols;x++)
+                        list.image().growX().pad(5).padLeft(0).padRight(0).height(3).color(Pal.shield);
+                        list.row();
+                        count = cols - 1;
+                    }
 
                     if((++count) % cols == 0){
                         list.row();

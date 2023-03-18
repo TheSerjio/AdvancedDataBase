@@ -13,6 +13,7 @@ import mindustry.ctype.ContentType;
 import mindustry.ctype.UnlockableContent;
 import mindustry.entities.bullet.BulletType;
 import mindustry.entities.part.DrawPart;
+import mindustry.gen.Icon;
 import mindustry.graphics.Pal;
 import mindustry.type.StatusEffect;
 import mindustry.type.Weapon;
@@ -24,7 +25,8 @@ import static mindustry.Vars.*;
 
 public class Intelligence {
     static final StatCat category = new StatCat("advanced");
-    static final Stat sDps = new Stat("dps", category),
+    static final Stat sUwu = new Stat("setmenuunit", category),
+            sDps = new Stat("dps", category),
             sEnv = new Stat("env", category),
             sEnvRequired = new Stat("envRequired", category),
             sEnvEnabled = new Stat("envEnabled", category),
@@ -164,6 +166,8 @@ public class Intelligence {
             }
             u.stats.add(Stat.targetsAir, u.targetAir);
             u.stats.add(Stat.targetsGround, u.targetGround);
+            var unit = u;
+            u.stats.add(sUwu, (Table t) -> t.button(Icon.unitsSmall, () -> Funny.set(unit)));
             env(u.stats, u.envRequired, u.envEnabled, u.envDisabled);
         }
 
@@ -196,12 +200,10 @@ public class Intelligence {
         for (var b : content.blocks()) {
             b.displayFlow = true;
             if (b.buildVisibility == BuildVisibility.debugOnly)
-                b.buildVisibility = BuildVisibility.shown;
-            if (b.alwaysReplace && b.buildVisibility != BuildVisibility.shown) {
-                b.buildVisibility = BuildVisibility.shown;
+                b.buildVisibility = SettingsMenu.debug;
+            else if (b.alwaysReplace && b.buildVisibility == BuildVisibility.hidden) {
                 b.envEnabled = Env.any;
-                b.requirements(mindustry.type.Category.logic, mindustry.type.ItemStack
-                        .with(mindustry.content.Items.graphite, 1, mindustry.content.Items.silicon, 1));
+                b.requirements(mindustry.type.Category.logic, SettingsMenu.boulder, mindustry.type.ItemStack.with(mindustry.content.Items.graphite, 1, mindustry.content.Items.silicon, 1));
             }
 
             env(b.stats, b.envRequired, b.envEnabled, b.envDisabled);
@@ -252,8 +254,8 @@ public class Intelligence {
     }
 
     public static final class EnvPack {
-        public int flag;
-        public String name;
+        public final int flag;
+        public final String name;
 
         public EnvPack(int flag, String name, String emoji) {
             this.flag = flag;
