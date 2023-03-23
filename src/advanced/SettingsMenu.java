@@ -18,7 +18,6 @@ public class SettingsMenu {
         public WeirdVisibility(String name) {
             super(() -> {
                 var i = arc.Core.settings.getInt("advanced." + name);
-                arc.util.Log.info(name + i + Vars.net.active() + Vars.net.server());
                 if (i == 0)
                     return false;
                 if (i == 2)
