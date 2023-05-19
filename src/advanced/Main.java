@@ -12,13 +12,14 @@ public class Main extends Mod {
 
     public Main() {
         Events.on(ClientLoadEvent.class, e -> {
-            Time.runTask(10, () -> {
+            Time.runTask(60, () -> {
                 Intelligence.initStats();// some icons are not loaded when event occurs
             });
             new DataBaseContent();
             new SpriteContent();
             new AtlasContent();
             new IconsContent();
+            new ScreenShotContent();
             bullet = new BulletDisplayContent();
             Funny.init();
             SettingsMenu.init();

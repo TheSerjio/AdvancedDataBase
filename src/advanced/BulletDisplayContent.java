@@ -2,13 +2,13 @@ package advanced;
 
 import arc.struct.ObjectMap;
 import mindustry.entities.bullet.BulletType;
+import mindustry.gen.Icon;
 import mindustry.world.meta.*;
 
 final class BulletDisplayContent extends WeirdContent {
 
     public BulletDisplayContent() {
-        super("bullet");
-        uiIcon = fullIcon = mindustry.content.StatusEffects.corroded.uiIcon;
+        super("bullet", Icon.admin);
     }
 
     private BulletType bullet;

@@ -6,8 +6,7 @@ import mindustry.gen.Icon;
 public class SpriteContent extends WeirdContent {
 
     public SpriteContent() {
-        super("sprite");
-        uiIcon = fullIcon = Icon.zoom.getRegion();
+        super("sprite", Icon.zoom);
     }
 
     @Override

@@ -93,8 +93,8 @@ public class Intelligence {
                 table.row();
             }
             if (o instanceof TextureRegion tr) {
-                if (tr == arc.Core.atlas.find("error"))
-                    continue;
+                //if (tr == arc.Core.atlas.find("error"))
+                  //  continue;
                 var str = builder.toString();
                 table.label(() -> str);
                 table.image(tr);

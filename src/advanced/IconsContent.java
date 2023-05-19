@@ -10,8 +10,7 @@ import mindustry.gen.Icon;
 public class IconsContent extends WeirdContent {
 
     public IconsContent() {
-        super("icon");
-        uiIcon = fullIcon = Icon.logic.getRegion();
+        super("icon", Icon.logic);
     }
 
     @Override

@@ -6,8 +6,7 @@ import mindustry.gen.Icon;
 public class DataBaseContent extends WeirdContent {
 
     public DataBaseContent() {
-        super("database");
-        uiIcon = fullIcon = Icon.book.getRegion();
+        super("database", Icon.book);
     }
     
     @Override

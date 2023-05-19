@@ -1,14 +1,15 @@
 package advanced;
 
+import arc.scene.style.TextureRegionDrawable;
 import mindustry.ctype.*;
 
 public class WeirdContent extends UnlockableContent {
 
-    public WeirdContent(String name) {
+    public WeirdContent(String name, TextureRegionDrawable icon) {
         super("advanced-" + name);
         alwaysUnlocked = true;
         unlocked = true;
-        uiIcon = fullIcon = arc.Core.atlas.find("error");
+        uiIcon = fullIcon = icon.getRegion();
     }
 
     @Override
