@@ -13,31 +13,44 @@ import arc.util.*;
 import mindustry.gen.Icon;
 
 public class ScreenShotContent extends WeirdContent {
+
+    int pixelsPerTile = 8;
+
     public ScreenShotContent() {
         super("screen-shot", Icon.fileImage);
     }
-    
+
     @Override
     public void checkStats() {
         super.checkStats();
         stats.add(Intelligence.sList, (Table t) -> {
-            t.label(() -> "Take map screenshot.\n[scarlet]Warning: high chance of out of memory error.[]\nPixels per tile: ");
             t.row();
-            for(int ppt = 1; ppt <= 32; ppt++){
-                var i = ppt;
-                t.button(Integer.toString(i), () -> takeMapScreenshot(i));
-                t.row();
-            }
+            t.label(() -> bundle.format("screenshot.ppt", pixelsPerTile)).growX();
+            t.row();
+            t.slider(1, 64, 1, pixelsPerTile, f -> pixelsPerTile = (int) f).fillX();
+            t.row();
+            t.label(() -> {
+                var w = world.width();
+                var h = world.height();
+                var ppt = pixelsPerTile;
+                return bundle.format("screenshot.size", w, h, w * ppt, h * ppt, w * h * ppt * ppt);
+            });
+            t.row();
+            t.button("@screenshot.normal", () -> takeMapScreenshot(true)).growX();
+            t.row();
+            t.button("@screenshot.weird", () -> takeMapScreenshot(false)).growX();
+            t.row();
         });
     }
 
-    public static void takeMapScreenshot(int pixelsPerTile){
+    void takeMapScreenshot(boolean normal) {
         int w = world.width() * pixelsPerTile, h = world.height() * pixelsPerTile;
 
         FrameBuffer buffer = new FrameBuffer(w, h);
 
         renderer.drawWeather = false;
         float vpW = camera.width, vpH = camera.height, px = camera.position.x, py = camera.position.y;
+
         disableUI = true;
         camera.width = world.width() * 8;
         camera.height = world.height() * 8;
@@ -56,12 +69,14 @@ public class ScreenShotContent extends WeirdContent {
         buffer.dispose();
 
         Threads.thread(() -> {
-            for(int i = 0; i < lines.length; i += 4){
-                lines[i + 3] = (byte)255;
+            if (normal) {
+                for (int i = 0; i < lines.length; i += 4) {
+                    lines[i + 3] = (byte) 255;
+                }
             }
             Pixmap fullPixmap = new Pixmap(w, h);
             Buffers.copy(lines, 0, fullPixmap.pixels, lines.length);
-            Fi file = screenshotDirectory.child("screenshot-" + Time.millis() + ".png");
+            Fi file = screenshotDirectory.child(state.map.name() + "-" + Time.millis() + ".png");
             PixmapIO.writePng(file, fullPixmap);
             fullPixmap.dispose();
             arc.Core.app.post(() -> ui.showInfoFade(Core.bundle.format("screenshot", file.toString())));
