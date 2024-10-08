@@ -193,7 +193,8 @@ public class Intelligence {
         for (var f : content.liquids()) {
             f.hidden = false;
 
-            f.stats.add(sEffect, f.effect.emoji() + " " + f.effect.localizedName);
+            if(f.effect != null)
+                f.stats.add(sEffect, f.effect.emoji() + " " + f.effect.localizedName);
             f.stats.addPercent(sBoil, f.boilPoint);
         }
 
