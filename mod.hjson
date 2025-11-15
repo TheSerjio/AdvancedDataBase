@@ -4,6 +4,6 @@ author: "The Serjio#3162"
 main: "advanced.Main"
 description: "Displays more stats in database. Unhides few things. Multiplayer compatible.\nПоказывает больше информации в базе данных. Открывает пару скрытых вещей. Не влияет на игру по сети"
 version: 1.1
-minGameVersion: 144
+minGameVersion: 147
 java: true
 hidden: true

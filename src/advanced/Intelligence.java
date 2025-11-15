@@ -204,7 +204,7 @@ public class Intelligence {
                 b.buildVisibility = SettingsMenu.debug;
             else if (b.alwaysReplace && b.buildVisibility == BuildVisibility.hidden) {
                 b.envEnabled = Env.any;
-                b.requirements(mindustry.type.Category.logic, SettingsMenu.boulder, mindustry.type.ItemStack.with(mindustry.content.Items.graphite, 1, mindustry.content.Items.silicon, 1));
+                b.requirements(mindustry.type.Category.logic, SettingsMenu.boulder, mindustry.type.ItemStack.with(mindustry.content.Items.graphite, 1));
             }
 
             env(b.stats, b.envRequired, b.envEnabled, b.envDisabled);

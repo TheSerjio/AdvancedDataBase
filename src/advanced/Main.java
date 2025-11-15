@@ -22,7 +22,6 @@ public class Main extends Mod {
             new ScreenShotContent();
             bullet = new BulletDisplayContent();
             Funny.init();
-            SettingsMenu.init();
         });
     }
 }
